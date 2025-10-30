@@ -1,0 +1,51 @@
+'=====================================================================
+' Nom de la fonction : AbregeConsonnes
+' Catégorie : Personnalisée / Texte
+' Description : Supprime toutes les voyelles d’un mot sauf la première
+'               lettre. Permet de créer une abréviation simplifiée.
+' Paramètres :
+'   texte (Variant) : le mot ou texte à abréger.
+' Retour :
+'   (String) : texte abrégé avec uniquement la première lettre et les consonnes restantes.
+' Exemple :
+'   =AbregeConsonnes("gant") → "gt"
+'   =AbregeConsonnes("pomme") → "pmm"
+'====================================================================
+Function AbregeConsonnes(texte As Variant) As String
+    Dim i As Integer
+    Dim resultat As String
+    Dim c As String
+    Dim voyelles As String
+    
+    On Error Resume Next
+    If IsEmpty(texte) Then
+        AbregeConsonnes = ""
+        Exit Function
+    End If
+    
+    ' Convertir en texte en sécurité
+    texte = CStr(texte)
+    On Error GoTo 0
+    
+    ' Sécurité : si le texte reste vide
+    If Len(texte) = 0 Then
+        AbregeConsonnes = ""
+        Exit Function
+    End If
+    
+    texte = LCase(Trim(texte))
+    voyelles = "aeiouyàâäéèêëîïôöùûüÿ"
+    
+    ' Garder la première lettre
+    resultat = Mid(texte, 1, 1)
+    
+    ' Supprimer les voyelles après la première lettre
+    For i = 2 To Len(texte)
+        c = Mid(texte, i, 1)
+        If InStr(voyelles, c) = 0 Then
+            resultat = resultat & c
+        End If
+    Next i
+    
+    AbregeConsonnes = resultat
+End Function
